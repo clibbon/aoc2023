@@ -1,3 +1,6 @@
+import numpy as np
+
+
 def read_input(path):
     with open(path, "r", encoding="utf-8") as f:
         entries = f.readlines()
@@ -16,13 +19,38 @@ def parse(entry):
 
 
 def task_1():
-    cards = read_input("test_input.txt")
+    cards = read_input("input.txt")
 
     total = 0
     for card in cards:
         card_id, winners, selected = parse(card)
-        
+        n_winners = len(winners.intersection(selected))
+        if n_winners >= 1:
+            total += 2**(n_winners - 1)
+    
+    print(f"Total score is {total}")
+
+
+def get_n_winners(card):
+    _, winners, selected = parse(card)
+    n_winners = len(winners.intersection(selected))
+    return n_winners
+
+
+def task_2():
+    cards = read_input("input.txt")
+    n_winners_per_card = [get_n_winners(card) for card in cards]
+    result = np.ones(shape=(len(n_winners_per_card,)))
+
+    for i, n_winners in enumerate(n_winners_per_card):
+        if n_winners > 0:
+            n_cards = result[i]
+            result[i+1:i+n_winners+1] += n_cards
+    
+    total_cards = np.sum(result)
+    print(f"Total cards won is {total_cards:.0f}")
 
 
 if __name__ == "__main__":
     task_1()
+    task_2()
