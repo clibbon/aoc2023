@@ -1,3 +1,4 @@
 settings.json
 
-*.ipynb
+scratch.ipynb
+*-checkpoint.ipynb
